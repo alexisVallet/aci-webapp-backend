@@ -185,6 +185,32 @@ IdentityClassifier/fast:
 	$(MAKE) -f CMakeFiles/IdentityClassifier.dir/build.make CMakeFiles/IdentityClassifier.dir/build
 .PHONY : IdentityClassifier/fast
 
+#=============================================================================
+# Target rules for targets named SpectralResidualSaliency
+
+# Build rule for target.
+SpectralResidualSaliency: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 SpectralResidualSaliency
+.PHONY : SpectralResidualSaliency
+
+# fast build rule for target.
+SpectralResidualSaliency/fast:
+	$(MAKE) -f CMakeFiles/SpectralResidualSaliency.dir/build.make CMakeFiles/SpectralResidualSaliency.dir/build
+.PHONY : SpectralResidualSaliency/fast
+
+#=============================================================================
+# Target rules for targets named SpectralResidualSaliencyExe
+
+# Build rule for target.
+SpectralResidualSaliencyExe: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 SpectralResidualSaliencyExe
+.PHONY : SpectralResidualSaliencyExe
+
+# fast build rule for target.
+SpectralResidualSaliencyExe/fast:
+	$(MAKE) -f CMakeFiles/SpectralResidualSaliencyExe.dir/build.make CMakeFiles/SpectralResidualSaliencyExe.dir/build
+.PHONY : SpectralResidualSaliencyExe/fast
+
 IdentityClassifier.o: IdentityClassifier.cpp.o
 .PHONY : IdentityClassifier.o
 
@@ -233,6 +259,30 @@ aci.cpp.s:
 	$(MAKE) -f CMakeFiles/ACI.dir/build.make CMakeFiles/ACI.dir/aci.cpp.s
 .PHONY : aci.cpp.s
 
+saliency/SpectralResidualSaliency.o: saliency/SpectralResidualSaliency.cpp.o
+.PHONY : saliency/SpectralResidualSaliency.o
+
+# target to build an object file
+saliency/SpectralResidualSaliency.cpp.o:
+	$(MAKE) -f CMakeFiles/SpectralResidualSaliency.dir/build.make CMakeFiles/SpectralResidualSaliency.dir/saliency/SpectralResidualSaliency.cpp.o
+.PHONY : saliency/SpectralResidualSaliency.cpp.o
+
+saliency/SpectralResidualSaliency.i: saliency/SpectralResidualSaliency.cpp.i
+.PHONY : saliency/SpectralResidualSaliency.i
+
+# target to preprocess a source file
+saliency/SpectralResidualSaliency.cpp.i:
+	$(MAKE) -f CMakeFiles/SpectralResidualSaliency.dir/build.make CMakeFiles/SpectralResidualSaliency.dir/saliency/SpectralResidualSaliency.cpp.i
+.PHONY : saliency/SpectralResidualSaliency.cpp.i
+
+saliency/SpectralResidualSaliency.s: saliency/SpectralResidualSaliency.cpp.s
+.PHONY : saliency/SpectralResidualSaliency.s
+
+# target to generate assembly for a file
+saliency/SpectralResidualSaliency.cpp.s:
+	$(MAKE) -f CMakeFiles/SpectralResidualSaliency.dir/build.make CMakeFiles/SpectralResidualSaliency.dir/saliency/SpectralResidualSaliency.cpp.s
+.PHONY : saliency/SpectralResidualSaliency.cpp.s
+
 test/GrabcutTest.o: test/GrabcutTest.cpp.o
 .PHONY : test/GrabcutTest.o
 
@@ -257,6 +307,30 @@ test/GrabcutTest.cpp.s:
 	$(MAKE) -f CMakeFiles/GrabCutExe.dir/build.make CMakeFiles/GrabCutExe.dir/test/GrabcutTest.cpp.s
 .PHONY : test/GrabcutTest.cpp.s
 
+test/saliency/SpectralResidualSaliencyTest.o: test/saliency/SpectralResidualSaliencyTest.cpp.o
+.PHONY : test/saliency/SpectralResidualSaliencyTest.o
+
+# target to build an object file
+test/saliency/SpectralResidualSaliencyTest.cpp.o:
+	$(MAKE) -f CMakeFiles/SpectralResidualSaliencyExe.dir/build.make CMakeFiles/SpectralResidualSaliencyExe.dir/test/saliency/SpectralResidualSaliencyTest.cpp.o
+.PHONY : test/saliency/SpectralResidualSaliencyTest.cpp.o
+
+test/saliency/SpectralResidualSaliencyTest.i: test/saliency/SpectralResidualSaliencyTest.cpp.i
+.PHONY : test/saliency/SpectralResidualSaliencyTest.i
+
+# target to preprocess a source file
+test/saliency/SpectralResidualSaliencyTest.cpp.i:
+	$(MAKE) -f CMakeFiles/SpectralResidualSaliencyExe.dir/build.make CMakeFiles/SpectralResidualSaliencyExe.dir/test/saliency/SpectralResidualSaliencyTest.cpp.i
+.PHONY : test/saliency/SpectralResidualSaliencyTest.cpp.i
+
+test/saliency/SpectralResidualSaliencyTest.s: test/saliency/SpectralResidualSaliencyTest.cpp.s
+.PHONY : test/saliency/SpectralResidualSaliencyTest.s
+
+# target to generate assembly for a file
+test/saliency/SpectralResidualSaliencyTest.cpp.s:
+	$(MAKE) -f CMakeFiles/SpectralResidualSaliencyExe.dir/build.make CMakeFiles/SpectralResidualSaliencyExe.dir/test/saliency/SpectralResidualSaliencyTest.cpp.s
+.PHONY : test/saliency/SpectralResidualSaliencyTest.cpp.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -266,6 +340,8 @@ help:
 	@echo "... ACI"
 	@echo "... GrabCutExe"
 	@echo "... IdentityClassifier"
+	@echo "... SpectralResidualSaliency"
+	@echo "... SpectralResidualSaliencyExe"
 	@echo "... edit_cache"
 	@echo "... install"
 	@echo "... install/local"
@@ -279,9 +355,15 @@ help:
 	@echo "... aci.o"
 	@echo "... aci.i"
 	@echo "... aci.s"
+	@echo "... saliency/SpectralResidualSaliency.o"
+	@echo "... saliency/SpectralResidualSaliency.i"
+	@echo "... saliency/SpectralResidualSaliency.s"
 	@echo "... test/GrabcutTest.o"
 	@echo "... test/GrabcutTest.i"
 	@echo "... test/GrabcutTest.s"
+	@echo "... test/saliency/SpectralResidualSaliencyTest.o"
+	@echo "... test/saliency/SpectralResidualSaliencyTest.i"
+	@echo "... test/saliency/SpectralResidualSaliencyTest.s"
 .PHONY : help
 
 

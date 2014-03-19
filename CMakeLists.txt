@@ -17,15 +17,23 @@ ENDIF(UNIX AND NOT WIN32)
 # main library
 find_package(OpenCV REQUIRED)
 include_directories("${PROJECT_SOURCE_DIR}")
+
 add_library(ACI SHARED aci.cpp)
 add_library(IdentityClassifier IdentityClassifier.cpp)
 target_link_libraries(ACI IdentityClassifier ${OpenCV_LIBS})
+
+add_library(SpectralResidualSaliency saliency/SpectralResidualSaliency.cpp)
 
 install(FILES aci.h DESTINATION include)
 install(TARGETS ACI DESTINATION lib)
 
 #tests
 enable_testing()
+
 add_executable(GrabCutExe test/GrabcutTest.cpp)
 target_link_libraries(GrabCutExe ${OpenCV_LIBS})
-add_test(GrabCutTest GrabCutExe "test/testimage.jpg")
+add_test(GrabCutTest GrabCutExe "./test/testimage.jpg")
+
+add_executable(SpectralResidualSaliencyExe test/saliency/SpectralResidualSaliencyTest.cpp)
+target_link_libraries(SpectralResidualSaliencyExe SpectralResidualSaliency ${OpenCV_LIBS})
+add_test(SpectralResidualSaliencyTest SpectralResidualSaliencyExe "./test/testimage.jpg")
