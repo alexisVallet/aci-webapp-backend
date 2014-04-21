@@ -16,6 +16,8 @@ ENDIF(UNIX AND NOT WIN32)
 
 # main library
 find_package(OpenCV REQUIRED)
+find_package(Boost COMPONENTS filesystem system REQUIRED)
+include_directories("{Boost_INCLUDE_DIR}")
 include_directories("${PROJECT_SOURCE_DIR}")
 
 add_library(ACI SHARED aci.cpp)
@@ -31,7 +33,7 @@ install(TARGETS ACI DESTINATION lib)
 enable_testing()
 
 add_executable(GrabCutExe test/GrabcutTest.cpp)
-target_link_libraries(GrabCutExe ${OpenCV_LIBS})
+target_link_libraries(GrabCutExe ${OpenCV_LIBS} ${Boost_LIBRARIES})
 add_test(GrabCutTest GrabCutExe "./test/testimage.jpg")
 
 add_executable(SpectralResidualSaliencyExe test/saliency/SpectralResidualSaliencyTest.cpp)

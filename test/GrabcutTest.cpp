@@ -1,3 +1,4 @@
+#include <boost/filesystem.hpp>
 #include "opencv2/highgui/highgui.hpp"
 #include "opencv2/imgproc/imgproc.hpp"
 
@@ -5,25 +6,26 @@
 
 using namespace std;
 using namespace cv;
+using namespace boost::filesystem;
 
 static void help()
 {
   cout << "\nThis program demonstrates GrabCut segmentation -- select an object in a region\n"
-            "and then grabcut will attempt to segment it out.\n"
-            "Call:\n"
-            "./grabcut <image_name>\n"
+    "and then grabcut will attempt to segment it out.\n"
+    "Call:\n"
+    "./grabcut <image_name>\n"
     "\nSelect a rectangular area around the object you want to segment\n" <<
-        "\nHot keys: \n"
-        "\tESC - quit the program\n"
-        "\tr - restore the original image\n"
-        "\tn - next iteration\n"
-        "\n"
-        "\tleft mouse button - set rectangle\n"
-        "\n"
-        "\tCTRL+left mouse button - set GC_BGD pixels\n"
-        "\tSHIFT+left mouse button - set CG_FGD pixels\n"
-        "\n"
-        "\tCTRL+right mouse button - set GC_PR_BGD pixels\n"
+    "\nHot keys: \n"
+    "\tESC - quit the program\n"
+    "\tr - restore the original image\n"
+    "\tn - next iteration\n"
+    "\n"
+    "\tleft mouse button - set rectangle\n"
+    "\n"
+    "\tCTRL+left mouse button - set GC_BGD pixels\n"
+    "\tSHIFT+left mouse button - set CG_FGD pixels\n"
+    "\n"
+    "\tCTRL+right mouse button - set GC_PR_BGD pixels\n"
     "\tSHIFT+right mouse button - set CG_PR_FGD pixels\n" << endl;
 }
 
@@ -60,6 +62,7 @@ public:
   void mouseClick( int event, int x, int y, int flags, void* param );
   int nextIter();
   int getIterCount() const { return iterCount; }
+  Mat getMask();
 private:
   void setRectInMask();
   void setLblsInMask( int flags, Point p, bool isPr );
@@ -76,6 +79,10 @@ private:
   vector<Point> fgdPxls, bgdPxls, prFgdPxls, prBgdPxls;
   int iterCount;
 };
+
+Mat GCApplication::getMask() {
+  return this->mask;
+}
 
 void GCApplication::reset()
 {
@@ -277,7 +284,7 @@ static void on_mouse( int event, int x, int y, int flags, void* param )
 
 int main( int argc, char** argv )
 {
-  if( argc!=2 )
+  if( argc < 2 )
     {
       help();
       return 1;
@@ -288,6 +295,8 @@ int main( int argc, char** argv )
       cout << "\nDurn, couldn't read in " << argv[1] << endl;
       return 1;
     }
+  path outputFolder(argv[2]);
+
   Mat image = imread( filename, 1 );
   if( image.empty() )
     {
@@ -307,29 +316,69 @@ int main( int argc, char** argv )
   for(;;)
     {
       int c = waitKey(0);
+      // save the image
+      // first extract the file name from the input path to constitute the output
+      // path
+      path filePath(filename);
+      path fileStem = filePath.stem();
+      string outputPath = outputFolder.string() + "/" + fileStem.string() + ".png";
+      
+      // converts the mask to an alpha channel layer
+      Mat alpha(image.rows, image.cols, CV_8UC1);
+      Mat mask = gcapp.getMask();
+      Mat bgraImage;
+      Mat layers[4];
+
       switch( (char) c )
-        {
-        case '\x1b':
+	{
+	case '\x1b':
 	  cout << "Exiting ..." << endl;
 	  goto exit_main;
-        case 'r':
+	case 's':
+	  for (int i = 0; i < image.rows; i++) {
+	    for (int j = 0; j < image.cols; j++) {
+	      switch (mask.at<uchar>(i,j)) {
+	      case GC_PR_FGD:
+		alpha.at<uchar>(i,j) = 255;
+		break;
+	      case GC_FGD:
+		alpha.at<uchar>(i,j) = 255;
+		break;
+	      default:
+		alpha.at<uchar>(i,j) = 0;
+		break;
+	      }
+	    }
+	  }
+	  // merge into a bgra image
+
+	  split(image, layers);
+	  layers[3] = alpha;
+
+	  merge(layers, 4, bgraImage);
+
+	  // write to the appropriate png file
+	  imwrite(outputPath, bgraImage);
+
+	  break;
+	case 'r':
 	  cout << endl;
 	  gcapp.reset();
 	  gcapp.showImage();
 	  break;
-        case 'n':
+	case 'n':
 	  int iterCount = gcapp.getIterCount();
 	  cout << "<" << iterCount << "... ";
 	  int newIterCount = gcapp.nextIter();
 	  if( newIterCount > iterCount )
-            {
+	    {
 	      gcapp.showImage();
 	      cout << iterCount << ">" << endl;
-            }
+	    }
 	  else
 	    cout << "rect must be determined>" << endl;
 	  break;
-        }
+	}
     }
 
  exit_main:
