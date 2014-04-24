@@ -133,8 +133,14 @@ void GCApplication::showImage() const
   for( it = prFgdPxls.begin(); it != prFgdPxls.end(); ++it )
     circle( res, *it, radius, PINK, thickness );
 
-  if( rectState == IN_PROCESS || rectState == SET )
-    rectangle( res, Point( rect.x, rect.y ), Point(rect.x + rect.width, rect.y + rect.height ), GREEN, 2);
+  if( rectState == IN_PROCESS || rectState == SET ) {
+    Point upperLeft( max(0, min(image->cols - 1, rect.x)), 
+		     max(0, min(image->rows - 1, rect.y)) );
+    Point downRight( max(0, min(image->cols - 1, rect.x + rect.width)), 
+		     max(0, min(image->rows - 1, rect.y + rect.height)));
+
+    rectangle( res, upperLeft, downRight, GREEN, 2);
+  }
 
   imshow( *winName, res );
 }
@@ -307,7 +313,7 @@ int main( int argc, char** argv )
   help();
 
   const string winName = "image";
-  namedWindow( winName, WINDOW_AUTOSIZE );
+  namedWindow( winName, CV_GUI_EXPANDED );
   setMouseCallback( winName, on_mouse, 0 );
 
   gcapp.setImageAndWinName( image, winName );
