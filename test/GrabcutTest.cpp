@@ -356,15 +356,9 @@ int main( int argc, char** argv )
 	      }
 	    }
 	  }
-	  // merge into a bgra image
-
-	  split(image, layers);
-	  layers[3] = alpha;
-
-	  merge(layers, 4, bgraImage);
 
 	  // write to the appropriate png file
-	  imwrite(outputPath, bgraImage);
+	  imwrite(outputPath, alpha);
 
 	  break;
 	case 'r':
